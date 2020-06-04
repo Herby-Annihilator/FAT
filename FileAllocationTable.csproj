@@ -44,7 +44,10 @@
     <Compile Include="Commands\Command.cs" />
     <Compile Include="Executors\Executor.cs" />
     <Compile Include="FAT\CatalogEntry.cs" />
+    <Compile Include="FAT\Directory.cs" />
     <Compile Include="FAT\File.cs" />
+    <Compile Include="FAT\FileNode.cs" />
+    <Compile Include="FAT\TemplateFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
