@@ -42,12 +42,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\DirectoryCommands\CreateDirectory.cs" />
+    <Compile Include="Commands\DirectoryCommands\OpenDirectory.cs" />
+    <Compile Include="Commands\DirectoryCommands\ReadDirectory.cs" />
+    <Compile Include="Commands\FileCommands\CloseFile.cs" />
+    <Compile Include="Commands\FileCommands\CreateFile.cs" />
+    <Compile Include="Commands\FileCommands\OpenFile.cs" />
+    <Compile Include="Commands\FileCommands\ReadFile.cs" />
+    <Compile Include="Commands\FileCommands\WriteToFile.cs" />
     <Compile Include="Executors\Executor.cs" />
     <Compile Include="FAT\CatalogEntry.cs" />
     <Compile Include="FAT\Directory.cs" />
+    <Compile Include="FAT\FAT32.cs" />
     <Compile Include="FAT\File.cs" />
-    <Compile Include="FAT\FileNode.cs" />
+    <Compile Include="FAT\Cluster.cs" />
+    <Compile Include="FAT\MyChar.cs" />
     <Compile Include="FAT\TemplateFile.cs" />
+    <Compile Include="GlobalConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

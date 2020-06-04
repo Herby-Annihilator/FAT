@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileAllocationTable.FAT
+namespace FileAllocationTable.Commands.FileCommands
 {
-    public class File : TemplateFile<char>
+    public class OpenFile : Command
     {
-        public override bool IsThereFreeSpace(int clusterNumber)
+        public override bool Execute()
         {
             throw new NotImplementedException();
         }

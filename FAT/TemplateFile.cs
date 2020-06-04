@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace FileAllocationTable.FAT
 {
-    public class TemplateFile<T>
+    public abstract class TemplateFile<T>
     {
+        /// <summary>
+        /// Номер последенего добавленного кластера
+        /// </summary>
+        public int LastUsedClusterNumber { get; protected set; }
         /// <summary>
         /// Корень, начальный блок файла
         /// </summary>
-        private FileNode<T> root;
+        private Cluster<T> root;
         /// <summary>
         ///  Текущее кол-во блоков в файле
         /// </summary>
@@ -25,14 +29,14 @@ namespace FileAllocationTable.FAT
         {
             if (root == null)
             {
-                root = new FileNode<T>(blockSize, blockNumber);
+                root = new Cluster<T>(blockSize, blockNumber);
             }
             else
             {
-                FileNode<T> currentNode = root;
+                Cluster<T> currentNode = root;
                 while (true)
                 {
-                    if (blockNumber < currentNode.BlockNumber)
+                    if (blockNumber < currentNode.ClusterNumber)
                     {
                         if (currentNode.LeftChild != null)
                         {
@@ -40,7 +44,7 @@ namespace FileAllocationTable.FAT
                         }
                         else
                         {
-                            currentNode.LeftChild = new FileNode<T>(blockSize, blockNumber);
+                            currentNode.LeftChild = new Cluster<T>(blockSize, blockNumber);
                             break;
                         }
                     }
@@ -52,12 +56,13 @@ namespace FileAllocationTable.FAT
                         }
                         else
                         {
-                            currentNode.RightChild = new FileNode<T>(blockSize, blockNumber);
+                            currentNode.RightChild = new Cluster<T>(blockSize, blockNumber);
                             break;
                         }
                     }
                 }
             }
+            LastUsedClusterNumber = blockNumber;
             BlockCount++;
             return;
         }
@@ -69,11 +74,11 @@ namespace FileAllocationTable.FAT
         {
             if (root != null)
             {
-                FileNode<T> deletedNode = root;
-                FileNode<T> parentNode = root;
+                Cluster<T> deletedNode = root;
+                Cluster<T> parentNode = root;
                 while (true)
                 {
-                    if (key < deletedNode.BlockNumber)
+                    if (key < deletedNode.ClusterNumber)
                     {
                         if (deletedNode.LeftChild != null)
                         {
@@ -85,7 +90,7 @@ namespace FileAllocationTable.FAT
                             return;
                         }
                     }
-                    else if (key > deletedNode.BlockNumber)
+                    else if (key > deletedNode.ClusterNumber)
                     {
                         if (deletedNode.RightChild != null)
                         {
@@ -106,7 +111,7 @@ namespace FileAllocationTable.FAT
                 if (deletedNode == parentNode)
                 {
                     // значит удаляем корень
-                    FileNode<T> minRightNode = FindMinNode(root.RightChild);
+                    Cluster<T> minRightNode = FindMinNode(root.RightChild);
                     if (minRightNode == null)
                     {
                         root = root.LeftChild;
@@ -125,7 +130,7 @@ namespace FileAllocationTable.FAT
                 }
                 else if (deletedNode == parentNode.LeftChild)
                 {
-                    FileNode<T> minRightNode = FindMinNode(deletedNode.RightChild);
+                    Cluster<T> minRightNode = FindMinNode(deletedNode.RightChild);
                     if (minRightNode == null)
                     {
                         parentNode.LeftChild = deletedNode.LeftChild;
@@ -144,7 +149,7 @@ namespace FileAllocationTable.FAT
                 }
                 else
                 {
-                    FileNode<T> minRightNode = FindMinNode(deletedNode.RightChild);
+                    Cluster<T> minRightNode = FindMinNode(deletedNode.RightChild);
                     if (minRightNode == null)
                     {
                         parentNode.RightChild = deletedNode.LeftChild;
@@ -171,7 +176,7 @@ namespace FileAllocationTable.FAT
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        private FileNode<T> FindMinNode(FileNode<T> root)
+        private Cluster<T> FindMinNode(Cluster<T> root)
         {
             if (root == null)
             {
@@ -183,8 +188,8 @@ namespace FileAllocationTable.FAT
             }
             else
             {
-                FileNode<T> currentNode = root.LeftChild;
-                FileNode<T> parentNode = root;
+                Cluster<T> currentNode = root.LeftChild;
+                Cluster<T> parentNode = root;
                 while (true)
                 {
                     if (currentNode.LeftChild == null)
@@ -207,16 +212,16 @@ namespace FileAllocationTable.FAT
         /// </summary>
         /// <param name="key">ключ</param>
         /// <returns></returns>
-        public FileNode<T> Search(int key)
+        public Cluster<T> Search(int key)
         {
-            FileNode<T> toReturn = root;
+            Cluster<T> toReturn = root;
             while (toReturn != null)
             {
-                if (key < toReturn.BlockNumber)
+                if (key < toReturn.ClusterNumber)
                 {
                     toReturn = toReturn.LeftChild;
                 }
-                else if (key > toReturn.BlockNumber)
+                else if (key > toReturn.ClusterNumber)
                 {
                     toReturn = toReturn.RightChild;
                 }
@@ -235,6 +240,11 @@ namespace FileAllocationTable.FAT
             root = null;
             BlockCount = 0;
         }
-
+        /// <summary>
+        /// Узнает, есть ли в кластере свободное место под данный тип T.
+        /// Если есть, то вернет true, иначе false.
+        /// </summary>
+        /// <param name="clusterNumber">кластер, в котором нужно произвести поиск</param>
+        public abstract bool IsThereFreeSpace(int clusterNumber);
     }
 }

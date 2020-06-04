@@ -109,10 +109,7 @@ namespace FileAllocationTable.FAT
         /// Возвращает или задает дату последней записи в файл/каталог
         /// </summary>
         public Date LastDateRecorded { get; set; }
-        /// <summary>
-        /// Максимальный номер блока в таблице FAT32 2^16
-        /// </summary>
-        public const int FIRST_BLOCK_MAX_NUMBER = 65535;
+        
         /// <summary>
         /// Номер первого блока в таблице FAT
         /// </summary>
@@ -128,9 +125,9 @@ namespace FileAllocationTable.FAT
             }
             set
             {
-                if (value > FIRST_BLOCK_MAX_NUMBER)
+                if (value > GlobalConstants.FIRST_BLOCK_MAX_NUMBER)
                 {
-                    firstBlockNumber = FIRST_BLOCK_MAX_NUMBER;
+                    firstBlockNumber = GlobalConstants.FIRST_BLOCK_MAX_NUMBER;
                 }
                 else if (value < 0)
                 {
@@ -142,10 +139,7 @@ namespace FileAllocationTable.FAT
                 }
             }
         }
-        /// <summary>
-        /// Максимальный размер файла (2^28 32 бита)
-        /// </summary>
-        public const int MAX_FILE_SIZE = 268435455;
+
         /// <summary>
         /// Размер файла
         /// </summary>
@@ -161,9 +155,9 @@ namespace FileAllocationTable.FAT
             }
             set
             {
-                if (value > MAX_FILE_SIZE)
+                if (value > GlobalConstants.MAX_FILE_SIZE)
                 {
-                    fileSize = MAX_FILE_SIZE;
+                    fileSize = GlobalConstants.MAX_FILE_SIZE;
                 }
                 else if (value < 0)
                 {

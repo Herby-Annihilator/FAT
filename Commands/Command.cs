@@ -8,6 +8,9 @@ namespace FileAllocationTable.Commands
 {
     public abstract class Command
     {
-
+        /// <summary>
+        /// Метод выполнения команды
+        /// </summary>
+        public abstract bool Execute();
     }
 }
