@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\DirectoryCommands\CloseDirectory.cs" />
     <Compile Include="Commands\DirectoryCommands\CreateDirectory.cs" />
     <Compile Include="Commands\DirectoryCommands\OpenDirectory.cs" />
     <Compile Include="Commands\DirectoryCommands\ReadDirectory.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="FAT\Cluster.cs" />
     <Compile Include="FAT\MyChar.cs" />
     <Compile Include="FAT\TemplateFile.cs" />
+    <Compile Include="FileSystem.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

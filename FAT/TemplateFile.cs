@@ -9,6 +9,10 @@ namespace FileAllocationTable.FAT
     public abstract class TemplateFile<T>
     {
         /// <summary>
+        /// Номер первого кластера
+        /// </summary>
+        public int FirstClusterNumber { get; protected set; }
+        /// <summary>
         /// Номер последенего добавленного кластера
         /// </summary>
         public int LastUsedClusterNumber { get; protected set; }
@@ -30,6 +34,7 @@ namespace FileAllocationTable.FAT
             if (root == null)
             {
                 root = new Cluster<T>(blockSize, blockNumber);
+                FirstClusterNumber = blockNumber;
             }
             else
             {
