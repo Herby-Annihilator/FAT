@@ -30,17 +30,9 @@ namespace FileAllocationTable
         /// </summary>
         public FAT32 FAT { get; set; }
         /// <summary>
-        /// Текущий используемый каталог
-        /// </summary>
-        public CatalogEntry CurrentCatalogEntry { get; set; } = null;
-        /// <summary>
         /// Корневой каталог
         /// </summary>
         public CatalogEntry RootDirectoryCatalog { get; set; }
-        /// <summary>
-        /// Этот объект (текущая директория) должен строиться только тогда, когда он действительно нужен 
-        /// </summary>
-        public Directory Directory { get; set; }
         /// <summary>
         /// Этот объект (текущий файл) должен строиться только тогда, когда он действительно нужен
         /// </summary>
@@ -49,6 +41,13 @@ namespace FileAllocationTable
         {
             return command.Execute();
         }
-
+        /// <summary>
+        /// Список файлов и каталогов, находящихся в данном каталоге
+        /// </summary>
+        public List<string> FilesAndDirectoriesInDirectory { get; set; }
+        /// <summary>
+        /// Текущий используемы файл или каталог
+        /// </summary>
+        public CatalogEntry CurrentFileOrDirectory { get; set; } = null;
     }
 }

@@ -9,23 +9,35 @@ namespace FileAllocationTable.FAT
     public class Directory : TemplateFile<CatalogEntry>
     {
         /// <summary>
-        /// Возвращает запись о каталоге, если находит его в указанном кластере, иначе вернет null
+        /// Возвращает запись о каталоге, если находит его в текущей директории, иначе вернет null
         /// </summary>
         /// <param name="name">имя каталога (часть абсолютного имени, ограниченная слешами)</param>
-        /// <param name="currentCluster">кластер, в котором ведется поиск</param>
+        /// <param name="clustersWhereFindOut">массив кластеров, принадлежащий этому каталогу</param>
         /// <returns></returns>
-        public CatalogEntry FindSubDirectory(string name, int currentCluster)
+        public CatalogEntry FindSubDirectory(string name, int[] clustersWhereFindOut)
         {
             CatalogEntry catalogEntry = null;
-            Cluster<CatalogEntry> cluster = Search(currentCluster);
-            for (int i = 0; i < cluster.Block.Length; i++)
+            Cluster<CatalogEntry> cluster;
+            for (int i = 0; i < clustersWhereFindOut.Length; i++)
             {
-                if (cluster.Block[i].Name == name.ToUpper())
+                cluster = Search(clustersWhereFindOut[i]);
+                for (int j = 0; j < cluster.Block.Length; j++)
                 {
-                    catalogEntry = cluster.Block[i];
+                    if (cluster.Block[j] != null)
+                    {
+                        if (cluster.Block[j].Name == name.ToUpper())
+                        {
+                            catalogEntry = cluster.Block[j];
+                            break;
+                        }
+                    }
+                }
+                if (catalogEntry != null)
+                {
                     break;
                 }
             }
+            
             return catalogEntry;
         }
         public Directory() : base()

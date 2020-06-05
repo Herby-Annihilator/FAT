@@ -72,5 +72,25 @@ namespace FileAllocationTable.FAT
             blocks[blockNumber] = 0;
             return true;
         }
+        /// <summary>
+        /// Возвращает массив кластеров, на которых расположен файл/каталог
+        /// </summary>
+        /// <param name="startCluster">номер кластера, с которого начинается файл/каталог</param>
+        /// <returns></returns>
+        public int[] GetFileBlocks(int startCluster)
+        {
+            if (startCluster == GlobalConstants.EOC)
+            {
+                return null;
+            }
+            int currentCluster = startCluster;
+            List<int> clusters = new List<int>();
+            while (currentCluster != GlobalConstants.EOC)
+            {
+                clusters.Add(currentCluster);
+                currentCluster = blocks[currentCluster];
+            }
+            return clusters.ToArray();
+        }
     }
 }

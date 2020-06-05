@@ -7,34 +7,34 @@ using FileAllocationTable.FAT;
 
 namespace FileAllocationTable.Commands
 {
-    public class OpenDirectory : Command
+    public class OpenDirectory : Command   // модифицируте поля файловой системы, чтобы можно было вызвать команду ReadDirectory
     {
+        private int rootDirectoryClusterNumber;
+        public FileSystem FileSystem { get; set; }
+
         private string fullName;
-        public FAT32 FAT { get; set; }
-        public Directory RootDirectory { get; set; }
+        private Directory RootDirectory { get; set; }
         public override bool Execute()
         {
-            string[] directories = fullName.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
-            CatalogEntry currentCatalog = RootDirectory.FindSubDirectory(directories[0], RootDirectory.FirstClusterNumber);
-            if (currentCatalog != null)
+            if (FileSystem.directoriesAndFiles[FileSystem.RootDirectoryCatalog.FirstBlockNumber] != null)
             {
-                for (int i = 1; i < directories.Length; i++)
-                {
-                    currentCatalog = RootDirectory.FindSubDirectory(directories[i], currentCatalog.FirstBlockNumber);
-                    if (currentCatalog == null)
-                    {
-                        return false;
-                    }
-                }
+                RootDirectory = (Directory)FileSystem.directoriesAndFiles[FileSystem.RootDirectoryCatalog.FirstBlockNumber];
+                int[] clusters = FileSystem.FAT.GetFileBlocks(RootDirectory.FirstClusterNumber);
+                string[] directories = fullName.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+                CatalogEntry currentDirectory = null;
+                
+                return true;
             }
-            return true;
+            else
+            {
+                return false;
+            }
         }
 
-        public OpenDirectory(string fullName, ref FAT32 fat, ref Directory directory)
+        public OpenDirectory(string fullName, ref FileSystem fileSystem)
         {
             this.fullName = fullName;
-            FAT = fat;
-            RootDirectory = directory;
+            FileSystem = fileSystem;
         }
     }
 }
