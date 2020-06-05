@@ -14,6 +14,10 @@ namespace FileAllocationTable
     public class FileSystem
     {
         /// <summary>
+        /// Это будет массив файлов и каталогов - "отражение" таблицы FAT
+        /// </summary>
+        public object[] directoriesAndFiles;
+        /// <summary>
         /// Размер диска в байтах
         /// </summary>
         public int HardDriverSize { get; set; }
@@ -45,5 +49,6 @@ namespace FileAllocationTable
         {
             return command.Execute();
         }
+
     }
 }

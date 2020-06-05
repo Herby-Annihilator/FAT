@@ -4,11 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FileAllocationTable.FAT;
+using FileAllocationTable.Commands.FileCommands;
 
 namespace FileAllocationTable.Commands.DirectoryCommands
 {
     public class CreateDirectory : Command
     {
+        private FileSystem fileSystem;
+        /// <summary>
+        /// Номер первого кластера директории-родителя
+        /// </summary>
+        private int currentDirectoryCluster;
+        /// <summary>
+        /// Ссылка на массив файлов и каталогов
+        /// </summary>
+        private object[] directoriesAndFiles;
         /// <summary>
         /// Атрибуты каталога
         /// </summary>
@@ -26,32 +36,41 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         /// </summary>
         public FAT32 FAT { get; set; }
         /// <summary>
-        /// Ссылка на корневой каталог (необязательно прям корневой каталог, это должен быть текущий каталог)
-        /// </summary>
-        public Directory RootDirectory { get; set; }
-        /// <summary>
         /// Создает каталог
         /// </summary>
         /// <returns></returns>
         public override bool Execute()
         {
-            int clusterNumber = FAT.GetNextFreeBlock();
-            if (clusterNumber != GlobalConstants.EOC)
+            Directory directoryToAdd = new Directory();
+            Directory currentDirectory;
+            int clusterForDirectory = FAT.GetNextFreeBlock();
+            if (clusterForDirectory != GlobalConstants.EOC)
             {
-                if (RootDirectory.IsThereFreeSpace(RootDirectory.LastUsedClusterNumber))
+                if (directoriesAndFiles[currentDirectoryCluster] == null)
                 {
-                    return RootDirectory.CreateSubdirectory(name, attributes, clusterNumber);
+                    return false;
                 }
-                else
+                currentDirectory = (Directory)directoriesAndFiles[currentDirectoryCluster];
+                CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, clusterForDirectory, name, "");
+                if (!currentDirectory.IsThereFreeSpace(currentDirectory.LastUsedClusterNumber))
                 {
-                    int clusterNumber2 = FAT.GetNextFreeBlock();
-                    if (clusterNumber2 != GlobalConstants.EOC)
+                    int cluster = FAT.GetNextFreeBlock();
+                    if (cluster == GlobalConstants.EOC)
                     {
-                        RootDirectory.Add(clusterSize, clusterNumber2);
-                        return RootDirectory.CreateSubdirectory(name, attributes, clusterNumber);
+                        return false;
                     }
-                }
-            }
+                    currentDirectory.Add(clusterSize, cluster);
+                }                    
+                currentDirectory.Search(currentDirectory.LastUsedClusterNumber).Add(catalogEntry);
+                directoryToAdd.Add(clusterSize, clusterForDirectory);
+                CreateDotFile dotFile = new CreateDotFile(fileSystem, clusterForDirectory);
+                CreateDoubleDotFile doubleDotFile = new CreateDoubleDotFile(fileSystem, clusterForDirectory, currentDirectoryCluster);
+                dotFile.Execute();
+                doubleDotFile.Execute();
+                directoriesAndFiles[clusterForDirectory] = directoryToAdd;
+                return true;
+            }            
+            
             return false;
         }
         /// <summary>
@@ -61,15 +80,17 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         /// <param name="directoryName">имя новой директории</param>
         /// <param name="hidden">будет ли директория скрыта</param>
         /// <param name="system">будет ли директория системной</param>
-        /// <param name="fat">ссылка на таблицу FAT</param>
-        /// <param name="rootDirectory">ссылка на текущий каталог</param>
-        public CreateDirectory(int clusterSize, string directoryName, bool hidden, bool system, ref FAT32 fat, ref Directory rootDirectory)
+        /// <param name="fileSystem">ссылка на файловую систему</param>
+        /// <param name="currentDirectoryCluster">номер первого кластера директории родителя</param>
+        public CreateDirectory(int clusterSize, string directoryName, bool hidden, bool system, ref FileSystem fileSystem, int currentDirectoryCluster)
         {
+            this.fileSystem = fileSystem;
             attributes = new Attributes(true, hidden, system, false, true, false);
-            FAT = fat;
-            RootDirectory = rootDirectory;
+            FAT = fileSystem.FAT;
             name = directoryName;
             this.clusterSize = clusterSize;
+            this.currentDirectoryCluster = currentDirectoryCluster;
+            directoriesAndFiles = fileSystem.directoriesAndFiles;
         }
     }
 }

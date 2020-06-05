@@ -9,29 +9,6 @@ namespace FileAllocationTable.FAT
     public class Directory : TemplateFile<CatalogEntry>
     {
         /// <summary>
-        /// Создает поддиректорию
-        /// </summary>
-        /// <param name="name">имя подкаталога</param>
-        /// <param name="attributes">его атрибуты</param>
-        /// <param name="clusterNumberInFATforNewDirectory">номер кластера для каталога</param>
-        /// <returns></returns>
-        public bool CreateSubdirectory(string name, Attributes attributes, int clusterNumberInFATforNewDirectory)
-        {
-            Cluster<CatalogEntry> cluster = Search(LastUsedClusterNumber);
-            CatalogEntry toAdd = new CatalogEntry();
-            toAdd.Attributes = attributes;
-            toAdd.DateOfCreation.SetCurrentDate();
-            toAdd.Name = name;
-            toAdd.Extension = "";
-            toAdd.FileSize = 0;
-            toAdd.FirstBlockNumber = clusterNumberInFATforNewDirectory;
-            toAdd.LastAccessDate = toAdd.DateOfCreation;
-            toAdd.LastDateRecorded = toAdd.DateOfCreation;
-            toAdd.TimeOfCreation.SetCurrentTime();
-            toAdd.LastTimeRecorded = toAdd.TimeOfCreation;
-            return cluster.Add(toAdd);
-        }
-        /// <summary>
         /// Возвращает запись о каталоге, если находит его в указанном кластере, иначе вернет null
         /// </summary>
         /// <param name="name">имя каталога (часть абсолютного имени, ограниченная слешами)</param>

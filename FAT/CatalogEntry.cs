@@ -92,23 +92,23 @@ namespace FileAllocationTable.FAT
         /// <summary>
         /// Возвращает или устанавливает дату и время создания файла/каталога
         /// </summary>
-        public Date DateOfCreation { get; set; }
+        public Date DateOfCreation { get; set; } = new Date();
         /// <summary>
         /// Возвращает или задает дату создания файла/каталога
         /// </summary>
-        public Time TimeOfCreation { get; set; }
+        public Time TimeOfCreation { get; set; } = new Time();
         /// <summary>
         /// Возвращает или задает дату последнего доступа
         /// </summary>
-        public Date LastAccessDate { get; set; }
+        public Date LastAccessDate { get; set; } = new Date();
         /// <summary>
         /// Возвращает или задает время последней записи в файл/каталог
         /// </summary>
-        public Time LastTimeRecorded { get; set; }
+        public Time LastTimeRecorded { get; set; } = new Time();
         /// <summary>
         /// Возвращает или задает дату последней записи в файл/каталог
         /// </summary>
-        public Date LastDateRecorded { get; set; }
+        public Date LastDateRecorded { get; set; } = new Date();
         
         /// <summary>
         /// Номер первого блока в таблице FAT
@@ -168,6 +168,28 @@ namespace FileAllocationTable.FAT
                     fileSize = value;
                 }
             }
+        }
+        /// <summary>
+        /// Создает каталожную запись с актуальными временными параметрами
+        /// </summary>
+        /// <param name="attributes">атрибуты файла</param>
+        /// <param name="fileSize">размер файла</param>
+        /// <param name="firstBlockNumber">номер первого кластера этого файла в FAT</param>
+        /// <param name="name">имя файла</param>
+        /// <param name="extension">расширение файла</param>
+        public CatalogEntry(Attributes attributes, int fileSize, int firstBlockNumber, string name, string extension)
+        {
+            Name = name;
+            Extension = extension;
+            Attributes = attributes;
+            FirstBlockNumber = firstBlockNumber;
+            FileSize = fileSize;
+
+            DateOfCreation.SetCurrentDate();
+            LastAccessDate.SetCurrentDate();
+            LastDateRecorded.SetCurrentDate();
+            LastTimeRecorded.SetCurrentTime();
+            TimeOfCreation.SetCurrentTime();
         }
     }
     /// <summary>

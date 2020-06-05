@@ -47,6 +47,8 @@
     <Compile Include="Commands\DirectoryCommands\OpenDirectory.cs" />
     <Compile Include="Commands\DirectoryCommands\ReadDirectory.cs" />
     <Compile Include="Commands\FileCommands\CloseFile.cs" />
+    <Compile Include="Commands\FileCommands\CreateDotFile.cs" />
+    <Compile Include="Commands\FileCommands\CreateDoubleDotFile.cs" />
     <Compile Include="Commands\FileCommands\CreateFile.cs" />
     <Compile Include="Commands\FileCommands\OpenFile.cs" />
     <Compile Include="Commands\FileCommands\ReadFile.cs" />
