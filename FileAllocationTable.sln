@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileAllocationTable", "FileAllocationTable.csproj", "{A249E2D4-E67C-45E9-854B-E74279B1463D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemFAT", "..\FileSystemFAT\FileSystemFAT.csproj", "{D6867F8E-0CA3-451D-ABAD-AAA5B92A1FB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A249E2D4-E67C-45E9-854B-E74279B1463D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A249E2D4-E67C-45E9-854B-E74279B1463D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A249E2D4-E67C-45E9-854B-E74279B1463D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6867F8E-0CA3-451D-ABAD-AAA5B92A1FB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6867F8E-0CA3-451D-ABAD-AAA5B92A1FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6867F8E-0CA3-451D-ABAD-AAA5B92A1FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6867F8E-0CA3-451D-ABAD-AAA5B92A1FB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -53,7 +53,6 @@
     <Compile Include="Commands\FileCommands\OpenFile.cs" />
     <Compile Include="Commands\FileCommands\ReadFile.cs" />
     <Compile Include="Commands\FileCommands\WriteToFile.cs" />
-    <Compile Include="Executors\Executor.cs" />
     <Compile Include="FAT\CatalogEntry.cs" />
     <Compile Include="FAT\Directory.cs" />
     <Compile Include="FAT\FAT32.cs" />
