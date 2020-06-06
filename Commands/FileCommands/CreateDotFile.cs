@@ -36,7 +36,7 @@ namespace FileAllocationTable.Commands.FileCommands
             }
             else
             {
-                int clusterForDirectory = FAT.GetNextFreeBlock();
+                int clusterForDirectory = FAT.GetNextFreeBlock(directory.FirstClusterNumber);
                 if (clusterForDirectory != GlobalConstants.EOC)
                 {
                     directory.Add(clusterSize, clusterForDirectory);

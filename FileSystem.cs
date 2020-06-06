@@ -44,7 +44,7 @@ namespace FileAllocationTable
         /// <summary>
         /// Список файлов и каталогов, находящихся в данном каталоге
         /// </summary>
-        public List<string> FilesAndDirectoriesInDirectory { get; set; }
+        public List<string> FilesAndDirectoriesInDirectory { get; set; } = new List<string>();
         /// <summary>
         /// Текущий используемы каталог
         /// </summary>
@@ -53,5 +53,9 @@ namespace FileAllocationTable
         /// Текущий используемый каталог
         /// </summary>
         public CatalogEntry CurrentFile { get; set; } = null;
+        /// <summary>
+        /// Содержимое файла - длина одной строки = не больше размера кластера в байтах
+        /// </summary>
+        public List<string> FileContent { get; set; } = new List<string>();
     }
 }

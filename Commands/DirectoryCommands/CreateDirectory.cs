@@ -28,7 +28,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         /// </summary>
         private string name;
         /// <summary>
-        /// Размер каталога
+        /// Размер каталога в байтах
         /// </summary>
         private int clusterSize;
         /// <summary>
@@ -54,12 +54,12 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                 CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, clusterForDirectory, name, "");
                 if (!currentDirectory.IsThereFreeSpace(currentDirectory.LastUsedClusterNumber))
                 {
-                    int cluster = FAT.GetNextFreeBlock();
+                    int cluster = FAT.GetNextFreeBlock(currentDirectory.FirstClusterNumber);
                     if (cluster == GlobalConstants.EOC)
                     {
                         return false;
                     }
-                    currentDirectory.Add(clusterSize, cluster);
+                    currentDirectory.Add(clusterSize / 32, cluster);  // потому что размер каталожной записи типо 32 байта
                 }                    
                 currentDirectory.Search(currentDirectory.LastUsedClusterNumber).Add(catalogEntry);
                 //
@@ -69,7 +69,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                 //
                 // выше костыль
                 //
-                directoryToAdd.Add(clusterSize, clusterForDirectory);
+                directoryToAdd.Add(clusterSize / 32, clusterForDirectory);
                 CreateDotFile dotFile = new CreateDotFile(fileSystem, clusterForDirectory);
                 CreateDoubleDotFile doubleDotFile = new CreateDoubleDotFile(fileSystem, clusterForDirectory, currentDirectoryCluster);
                 dotFile.Execute();

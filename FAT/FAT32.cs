@@ -48,10 +48,30 @@ namespace FileAllocationTable.FAT
             {
                 if (blocks[i] == 0)
                 {
-                    toReturn = blocks[i];
+                    toReturn = i;
+                    blocks[i] = GlobalConstants.EOC;
                 }
             }
             return toReturn;
+        }
+        /// <summary>
+        /// Возвращает следующий свободный кластер (блок), начиная с текущего (это должен быть номер стартового кластера файла или директории).
+        /// Если свободных нет, то вернет EOC
+        /// </summary>
+        /// <param name="startBlock"></param>
+        /// <returns></returns>
+        public int GetNextFreeBlock(int startBlock)
+        {
+            int currentBlockIndex = startBlock;
+            if (blocks[currentBlockIndex] != GlobalConstants.EOC)
+            {
+                while (blocks[currentBlockIndex] != GlobalConstants.EOC)
+                {
+                    currentBlockIndex = blocks[currentBlockIndex];
+                }
+                blocks[currentBlockIndex] = GetNextFreeBlock();
+            }
+            return blocks[currentBlockIndex];
         }
         /// <summary>
         /// Если может, то освобождает блок с указанным номером. Номер блока не превышает EOC и не может быть меньше 2.

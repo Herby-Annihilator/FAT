@@ -8,9 +8,10 @@ namespace FileAllocationTable.FAT
 {
     public class File : TemplateFile<char>
     {
+        
         public override bool IsThereFreeSpace(int clusterNumber)
         {
-            throw new NotImplementedException();
+            throw new Exception();
         }
     }
 }

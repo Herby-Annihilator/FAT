@@ -63,16 +63,17 @@ namespace FileAllocationTable.Commands.FileCommands
                     if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
                     {
                         directoriesAndFiles[directoryCluster] = directory;
+                        file.Add(clusterSize, clusterForFile);
                         directoriesAndFiles[clusterForFile] = file;
                         return true;
                     }
                 }
                 else
                 {
-                    int clusterForDirectory = FAT.GetNextFreeBlock();
+                    int clusterForDirectory = FAT.GetNextFreeBlock(directory.FirstClusterNumber);
                     if (clusterForDirectory != GlobalConstants.EOC)
                     {
-                        directory.Add(clusterSize, clusterForDirectory);
+                        directory.Add(clusterSize / 32, clusterForDirectory);   // потому что размер каталожной записи типо 32 байта
                         CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, clusterForFile, name, extension);
                         if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
                         {
