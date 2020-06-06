@@ -30,6 +30,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
             }
             currentDirectory = (Directory)FileSystem.directoriesAndFiles[doubleDotFile.FirstBlockNumber];
             FileSystem.CurrentDirectory = currentDirectory.CatalogEntry;
+            FileSystem.CurrentDirectory.LastAccessDate.SetCurrentDate();
             return true;
         }
         /// <summary>

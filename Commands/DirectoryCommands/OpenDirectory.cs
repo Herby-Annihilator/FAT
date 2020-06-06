@@ -43,6 +43,7 @@ namespace FileAllocationTable.Commands
                     clusters = FileSystem.FAT.GetFileBlocks(StartDirectory.FirstClusterNumber);
                 }
                 FileSystem.CurrentDirectory = currentDirectoryEntry;
+                FileSystem.CurrentDirectory.LastAccessDate.SetCurrentDate();
                 return true;
             }
             else

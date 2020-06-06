@@ -30,13 +30,13 @@ namespace FileAllocationTable.Commands.FileCommands
         public override bool Execute()
         {
             Directory directory;
-            if (directoriesAndFiles[directoryCluster] == null)
+            if (FileSystem.directoriesAndFiles[directoryCluster] == null)
             {
                 return false;
             }
             else
             {
-                directory = (Directory)directoriesAndFiles[directoryCluster];
+                directory = (Directory)FileSystem.directoriesAndFiles[directoryCluster];
             }
 
             if (directory.IsThereFreeSpace(directory.LastUsedClusterNumber))
@@ -44,21 +44,21 @@ namespace FileAllocationTable.Commands.FileCommands
                 CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, parentDirectoryCluster, name, extension);
                 if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
                 {
-                    directoriesAndFiles[directoryCluster] = directory;
+                    FileSystem.directoriesAndFiles[directoryCluster] = directory;
                     return true;
                 }
 
             }
             else
             {
-                int clusterForDirectory = FAT.GetNextFreeBlock(directory.FirstClusterNumber);
+                int clusterForDirectory = FileSystem.FAT.GetNextFreeBlock(directory.FirstClusterNumber);
                 if (clusterForDirectory != GlobalConstants.EOC)
                 {
-                    directory.Add(clusterSize, clusterForDirectory);
+                    directory.Add(FileSystem.ClusterSize / 32, clusterForDirectory);
                     CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, parentDirectoryCluster, name, extension);
                     if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
                     {
-                        directoriesAndFiles[directoryCluster] = directory;
+                        FileSystem.directoriesAndFiles[directoryCluster] = directory;
                         return true;
                     }
                 }

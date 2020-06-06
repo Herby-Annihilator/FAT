@@ -27,6 +27,7 @@ namespace FileAllocationTable.Commands.FileCommands
             {
                 FileSystem.FileContent.Add(new string(file.Search(clusters[i]).Block));
             }
+            FileSystem.CurrentFile.LastAccessDate.SetCurrentDate();
             return true;
         }
         /// <summary>

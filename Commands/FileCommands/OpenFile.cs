@@ -35,6 +35,7 @@ namespace FileAllocationTable.Commands.FileCommands
             if (file != null)
             {
                 FileSystem.CurrentFile = file;
+                FileSystem.CurrentFile.LastAccessDate.SetCurrentDate();
                 return true;
             }
             else

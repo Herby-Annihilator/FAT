@@ -13,6 +13,10 @@ namespace FileAllocationTable.Commands.FileCommands
     public class CreateFile : Command
     {
         /// <summary>
+        /// Ссылка на файловую систему
+        /// </summary>
+        public FileSystem FileSystem { get; set; }
+        /// <summary>
         /// Имя файла
         /// </summary>
         protected string name;
@@ -28,33 +32,21 @@ namespace FileAllocationTable.Commands.FileCommands
         /// Нчальный номер кластера директории, в которой создается файл
         /// </summary>
         protected int directoryCluster;
-        /// <summary>
-        /// Размер кластера в байтах
-        /// </summary>
-        protected int clusterSize;
-        /// <summary>
-        /// Таблица FAT
-        /// </summary>
-        public FAT32 FAT { get; set; }
-        /// <summary>
-        /// Массив директорий и файлов
-        /// </summary>
-        protected object[] directoriesAndFiles;
 
         public override bool Execute()
         {
             File file = new File();
-            int clusterForFile = FAT.GetNextFreeBlock();
+            int clusterForFile = FileSystem.FAT.GetNextFreeBlock();
             if (clusterForFile != GlobalConstants.EOC)
             {
                 Directory directory;
-                if (directoriesAndFiles[directoryCluster] == null)
+                if (FileSystem.directoriesAndFiles[directoryCluster] == null)
                 {
                     return false;
                 }
                 else
                 {
-                    directory = (Directory)directoriesAndFiles[directoryCluster];
+                    directory = (Directory)FileSystem.directoriesAndFiles[directoryCluster];
                 }
                 
                 if (directory.IsThereFreeSpace(directory.LastUsedClusterNumber))
@@ -62,28 +54,28 @@ namespace FileAllocationTable.Commands.FileCommands
                     CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, clusterForFile, name, extension);
                     if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
                     {
-                        directoriesAndFiles[directoryCluster] = directory;
-                        file.Add(clusterSize, clusterForFile);
-                        directoriesAndFiles[clusterForFile] = file;
+                        FileSystem.directoriesAndFiles[directoryCluster] = directory;
+                        file.Add(FileSystem.ClusterSize, clusterForFile);
+                        FileSystem.directoriesAndFiles[clusterForFile] = file;
                         return true;
                     }
                 }
                 else
                 {
-                    int clusterForDirectory = FAT.GetNextFreeBlock(directory.FirstClusterNumber);
+                    int clusterForDirectory = FileSystem.FAT.GetNextFreeBlock(directory.FirstClusterNumber);
                     if (clusterForDirectory != GlobalConstants.EOC)
                     {
-                        directory.Add(clusterSize / 32, clusterForDirectory);   // потому что размер каталожной записи типо 32 байта
+                        directory.Add(FileSystem.ClusterSize / 32, clusterForDirectory);   // потому что размер каталожной записи типо 32 байта
                         CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, clusterForFile, name, extension);
                         if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
                         {
-                            directoriesAndFiles[directoryCluster] = directory;
-                            directoriesAndFiles[clusterForFile] = file;
+                            FileSystem.directoriesAndFiles[directoryCluster] = directory;
+                            FileSystem.directoriesAndFiles[clusterForFile] = file;
                             return true;
                         }
                         
                     }
-                }                
+                } 
             }
             return false;
         }
@@ -103,9 +95,7 @@ namespace FileAllocationTable.Commands.FileCommands
             this.extension = extension;
             this.directoryCluster = directoryCluster;
             attributes = new Attributes(readOnly, hide, system, false, false, false);
-            FAT = fileSystem.FAT;
-            directoriesAndFiles = fileSystem.directoriesAndFiles;
-            clusterSize = fileSystem.ClusterSize;
+            FileSystem = fileSystem;
         }
     }
 }

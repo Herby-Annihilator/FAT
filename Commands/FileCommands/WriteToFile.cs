@@ -58,6 +58,8 @@ namespace FileAllocationTable.Commands.FileCommands
                 file.Search(clusters[i]).Block = FileSystem.FileContent[i].ToCharArray();
             }
             FileSystem.directoriesAndFiles[FileSystem.CurrentFile.FirstBlockNumber] = file;  // потому что мы изменили файл (возможно, такое присвоение не обязательно)
+            FileSystem.CurrentFile.LastDateRecorded.SetCurrentDate();
+            FileSystem.CurrentFile.LastTimeRecorded.SetCurrentHours();
             return true;
         }
         /// <summary>

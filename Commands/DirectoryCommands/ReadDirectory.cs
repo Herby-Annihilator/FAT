@@ -44,6 +44,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                     }
                 }
             }
+            FileSystem.CurrentDirectory.LastAccessDate.SetCurrentDate();
             return true;
         }
         /// <summary>
