@@ -8,9 +8,13 @@ namespace FileAllocationTable.Commands.FileCommands
 {
     public class ReadFile : Command
     {
+        public FileSystem FileSystem { get; set; }
+
         public override bool Execute()
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

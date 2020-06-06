@@ -8,6 +8,12 @@ namespace FileAllocationTable.FAT
 {
     public class Directory : TemplateFile<CatalogEntry>
     {
+        //public delegate bool DesiredFileOrDirectory(string nameAndExtension, string desiredName); 
+
+        /// <summary>
+        /// Каталожная запись этого каталога (костыль, ну а что поделать)
+        /// </summary>
+        public CatalogEntry CatalogEntry { get; set; }
         /// <summary>
         /// Возвращает запись о каталоге, если находит его в текущей директории, иначе вернет null
         /// </summary>
@@ -40,9 +46,41 @@ namespace FileAllocationTable.FAT
             
             return catalogEntry;
         }
-        public Directory() : base()
+        /// <summary>
+        /// Находит файл в текущем каталоге
+        /// </summary>
+        /// <param name="name">имя файла</param>
+        /// <param name="ext">расширение файла</param>
+        /// <param name="clusters">массив кластеров, в которых располагается данная директория</param>
+        /// <returns></returns>
+        public CatalogEntry FindFile(string name, string ext, int[] clusters)
         {
-            
+            CatalogEntry file = null;
+            Cluster<CatalogEntry> cluster;
+            for (int j = 0; j < clusters.Length; j++)
+            {
+                cluster = Search(clusters[j]);
+                for (int i = 0; i < cluster.Block.Length; i++)
+                {
+                    if (cluster.Block[i] != null)
+                    {
+                        if (cluster.Block[i].Name == name.ToUpper() && cluster.Block[i].Extension == ext.ToUpper())
+                        {
+                            file = cluster.Block[i];
+                            break;
+                        }
+                    }
+                }
+                if (file != null)
+                {
+                    break;
+                }
+            }
+            return file;
+        }
+        public Directory(CatalogEntry catalogEntry) : base()
+        {
+            CatalogEntry = catalogEntry;
         }
         /// <summary>
         /// Узнает, есть ли в кластере свободное место под каталожную запись.

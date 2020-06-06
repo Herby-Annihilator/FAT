@@ -41,7 +41,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         /// <returns></returns>
         public override bool Execute()
         {
-            Directory directoryToAdd = new Directory();
+            
             Directory currentDirectory;
             int clusterForDirectory = FAT.GetNextFreeBlock();
             if (clusterForDirectory != GlobalConstants.EOC)
@@ -62,6 +62,13 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                     currentDirectory.Add(clusterSize, cluster);
                 }                    
                 currentDirectory.Search(currentDirectory.LastUsedClusterNumber).Add(catalogEntry);
+                //
+                // ниже костыль
+                //
+                Directory directoryToAdd = new Directory(catalogEntry);
+                //
+                // выше костыль
+                //
                 directoryToAdd.Add(clusterSize, clusterForDirectory);
                 CreateDotFile dotFile = new CreateDotFile(fileSystem, clusterForDirectory);
                 CreateDoubleDotFile doubleDotFile = new CreateDoubleDotFile(fileSystem, clusterForDirectory, currentDirectoryCluster);

@@ -46,8 +46,12 @@ namespace FileAllocationTable
         /// </summary>
         public List<string> FilesAndDirectoriesInDirectory { get; set; }
         /// <summary>
-        /// Текущий используемы файл или каталог
+        /// Текущий используемы каталог
         /// </summary>
-        public CatalogEntry CurrentFileOrDirectory { get; set; } = null;
+        public CatalogEntry CurrentDirectory { get; set; } = null;
+        /// <summary>
+        /// Текущий используемый каталог
+        /// </summary>
+        public CatalogEntry CurrentFile { get; set; } = null;
     }
 }

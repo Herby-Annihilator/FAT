@@ -53,7 +53,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         public ReadDirectory(ref FileSystem fileSystem)
         {
             FileSystem = fileSystem;
-            currentDirectory = (Directory)FileSystem.directoriesAndFiles[FileSystem.CurrentFileOrDirectory.FirstBlockNumber];
+            currentDirectory = (Directory)FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber];
             fat = FileSystem.FAT;
         }
     }
