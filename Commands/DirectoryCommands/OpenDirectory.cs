@@ -24,7 +24,7 @@ namespace FileAllocationTable.Commands
         /// Директория, с которой стартует поиск
         /// </summary>
         private Directory StartDirectory { get; set; }
-        public override bool Execute()
+        internal override bool Execute()
         {
             if (FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber] != null)
             {

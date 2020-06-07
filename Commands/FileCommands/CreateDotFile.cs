@@ -12,7 +12,7 @@ namespace FileAllocationTable.Commands.FileCommands
     /// </summary>
     public class CreateDotFile : CreateFile
     {
-        public override bool Execute()
+        internal override bool Execute()
         {          
             Directory directory;
             if (FileSystem.directoriesAndFiles[directoryCluster] == null)
@@ -27,7 +27,7 @@ namespace FileAllocationTable.Commands.FileCommands
             if (directory.IsThereFreeSpace(directory.LastUsedClusterNumber))
             {
                 CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, directoryCluster, name, extension);
-                if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
+                if (directory.AddEntry(catalogEntry))
                 {
                     FileSystem.directoriesAndFiles[directoryCluster] = directory;
                     return true;
@@ -41,7 +41,7 @@ namespace FileAllocationTable.Commands.FileCommands
                 {
                     directory.Add(FileSystem.ClusterSize / 32, clusterForDirectory);
                     CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, directoryCluster, name, extension);
-                    if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
+                    if (directory.AddEntry(catalogEntry))
                     {
                         FileSystem.directoriesAndFiles[directoryCluster] = directory;
                         return true;
@@ -56,7 +56,7 @@ namespace FileAllocationTable.Commands.FileCommands
         /// </summary>
         /// <param name="fileSystem">файловая система</param>
         /// <param name="directoryCluster">стартовый номер кластера той директории, в которой будем делать этот файл</param>
-        public CreateDotFile(FileSystem fileSystem, int directoryCluster) : base(".", "", true, true, true, ref fileSystem, directoryCluster)
+        public CreateDotFile(FileSystem fileSystem, int directoryCluster) : base(".", "", true, true, true, ref fileSystem)
         {
             
         }

@@ -39,40 +39,6 @@ namespace FileAllocationTable.FAT
             ClusterNumber = blockNumber;
             nextFreeIndexInBlock = 0;
         }
-        /// <summary>
-        /// Добавляет T в массив
-        /// </summary>
-        /// <param name="data">ваши данные</param>
-        /// <returns></returns>
-        public bool Add(T data)
-        {
-            if (nextFreeIndexInBlock >= Block.Length)
-            {
-                return false;
-            }
-            else
-            {
-                Block[nextFreeIndexInBlock] = data;
-                nextFreeIndexInBlock++;
-            }
-            return true;
-        }
-
         private int nextFreeIndexInBlock;
-        /// <summary>
-        /// Указывает, есть ли в кластере свободное место для T типа
-        /// </summary>
-        /// <returns></returns>
-        public bool IsThereFreeSpace()
-        {
-            if (nextFreeIndexInBlock >= Block.Length)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
     }
 }

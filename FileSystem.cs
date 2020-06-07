@@ -70,11 +70,43 @@ namespace FileAllocationTable
             //
             int clusterForRoot = FAT.GetNextFreeBlock();
             Attributes rootAttributes = new Attributes(false, false, true, false, true, false);
-            RootDirectoryCatalog = new CatalogEntry(rootAttributes, 0, clusterForRoot, "\\", "");
+            RootDirectoryCatalog = new CatalogEntry(rootAttributes, ClusterSize / 32, clusterForRoot, "\\", "");
             directoriesAndFiles[clusterForRoot] = new Directory(RootDirectoryCatalog);
             CurrentDirectory = RootDirectoryCatalog;
             CreateDotFile dotFile = new CreateDotFile(this, clusterForRoot);
             dotFile.Execute();
+        }
+        /// <summary>
+        /// Возвращает атрибуты текущего открытого файла
+        /// </summary>
+        /// <returns></returns>
+        public Attributes GetCurrentFileAttributes()
+        {
+            if (CurrentFile != null)
+            {
+                return CurrentFile.Attributes;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// Устанавливает атрибуты текущего файла
+        /// </summary>
+        /// <param name="attributes">атрибуты</param>
+        /// <returns></returns>
+        public bool SetFileAttributes(Attributes attributes)
+        {
+            if (CurrentFile != null)
+            {
+                CurrentFile.Attributes = attributes;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

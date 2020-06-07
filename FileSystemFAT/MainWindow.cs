@@ -25,14 +25,15 @@ namespace FileSystemFAT
         /// Файловая система
         /// </summary>
         private FileSystem fileSystem;
-        public MainWindow()
+        public MainWindow(StartWindow startWindow)
         {
             InitializeComponent();
+            Parent = startWindow;
             fileSystem = new FileSystem(Parent.ROMsize);
             for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
             {
                 textBoxSubdirectories.Text += "\"" + fileSystem.FilesAndDirectoriesInDirectory[i] + "\"" + " ";
-            }
+            }            
         }
 
         private void buttonCreateSubDirectory_MouseHover(object sender, EventArgs e)
@@ -137,6 +138,10 @@ namespace FileSystemFAT
                         MessageBox.Show("Проверяй массив object-ов, похоже неверный апкаст", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         this.Close();
                     }
+                    for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
+                    {
+                        textBoxSubdirectories.Text += "\"" + fileSystem.FilesAndDirectoriesInDirectory[i] + "\"" + " ";
+                    }
                 }
             }
             textBoxNextSubdirectory.Clear();
@@ -175,7 +180,7 @@ namespace FileSystemFAT
             textBoxSubdirectories.Text = "";
             for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
             {
-                textBoxSubdirectories.Text += fileSystem.FilesAndDirectoriesInDirectory[i];
+                textBoxSubdirectories.Text += "\"" + fileSystem.FilesAndDirectoriesInDirectory[i] + "\"" + " ";
             }
         }
         /// <summary>
@@ -215,6 +220,9 @@ namespace FileSystemFAT
                         {
                             textBoxRewriteFile.Text += fileSystem.FileContent[i];
                         }
+                        textBoxRewriteFileName.Clear();
+                        toolStripStatusLabel2.Text = "Можно редактировать файл в большом белом разделе справа!!!";
+                        textBoxRewriteFile.Enabled = true;
                     }
                     else
                     {
@@ -223,7 +231,6 @@ namespace FileSystemFAT
                     }
                 }
             }
-            textBoxRewriteFileName.Clear();
         }
         /// <summary>
         /// Принять изменения (сохранить)
@@ -258,9 +265,126 @@ namespace FileSystemFAT
             {
                 MessageBox.Show("Памяти не хватило", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            else
+            {
+                toolStripStatusLabel2.Text = "Редактирование завершено. Файл сохранен";
+                textBoxRewriteFile.Enabled = false;
+            }
             buttonAcceptChanges.Enabled = false;
             buttonRewriteFile.Enabled = true;
-            textBoxRewriteFile.Clear();
+            textBoxRewriteFile.Clear();           
+        }
+        /// <summary>
+        /// Изменяем атрибуты
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonChangeAttributes_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxChangeAttributes.Text))
+            {
+                MessageBox.Show("Поле имени файла пустое!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                string[] nameAndExt = textBoxChangeAttributes.Text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                string name = nameAndExt[0];
+                string ext = "";
+                if (nameAndExt.Length == 2)
+                {
+                    ext = nameAndExt[1];
+                }
+                OpenFile openFile = new OpenFile(name, ext, fileSystem);
+                if (!fileSystem.ExecuteCommand(openFile))
+                {
+                    MessageBox.Show("Не могу обновить ссылки", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    ReadFile readFile = new ReadFile(fileSystem);
+                    if (!fileSystem.ExecuteCommand(readFile))
+                    {
+                        MessageBox.Show("Смотри массив object-ов", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Close();
+                    }
+                    else
+                    {
+                        Attributes attributes = fileSystem.GetCurrentFileAttributes();
+                        if (attributes == null)
+                        {
+                            MessageBox.Show("Файл не открыт", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            ChangeAttributes changeAttributes = new ChangeAttributes(fileSystem, textBoxChangeAttributes.Text);
+                            changeAttributes.ShowDialog();
+                            //
+                            // Читаем заново текущую директорию и обновляем данные
+                            //
+                            ReadDirectory readDirectory = new ReadDirectory(fileSystem);
+                            if (!fileSystem.ExecuteCommand(readDirectory))
+                            {
+                                MessageBox.Show("Смотри массив object-ов", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.Close();
+                            }
+                            else
+                            {
+                                textBoxSubdirectories.Clear();
+                                for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
+                                {
+                                    textBoxSubdirectories.Text += "\"" + fileSystem.FilesAndDirectoriesInDirectory[i] + "\"" + " ";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            textBoxChangeAttributes.Clear();
+        }
+        /// <summary>
+        /// Удаляем файл
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonRemoveFile_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxRemoveFile.Text))
+            {
+                MessageBox.Show("Поле имени файла пустое!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                string[] nameAndExt = textBoxRemoveFile.Text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                string name = nameAndExt[0];
+                string ext = "";
+                if (nameAndExt.Length == 2)
+                {
+                    ext = nameAndExt[1];
+                }
+                RemoveFile removeFile = new RemoveFile(fileSystem, name, ext);
+                if (!fileSystem.ExecuteCommand(removeFile))
+                {
+                    MessageBox.Show("Не удалось удалить файл", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    ReadDirectory readDirectory = new ReadDirectory(fileSystem);
+                    if (!fileSystem.ExecuteCommand(readDirectory))
+                    {
+                        MessageBox.Show("Смотри массив object-ов", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Close();
+                    }
+                    else
+                    {
+                        textBoxSubdirectories.Clear();
+                        for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
+                        {
+                            textBoxSubdirectories.Text += "\"" + fileSystem.FilesAndDirectoriesInDirectory[i] + "\"" + " ";
+                        }
+                    }
+                }
+            }
+            textBoxRemoveFile.Clear();
         }
     }
 }

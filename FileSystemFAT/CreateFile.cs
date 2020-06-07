@@ -58,7 +58,6 @@ namespace FileSystemFAT
                     }
                 }
             }
-            this.Close();
         }
     }
 }

@@ -50,6 +50,7 @@ namespace FileAllocationTable.FAT
                 {
                     toReturn = i;
                     blocks[i] = GlobalConstants.EOC;
+                    break;
                 }
             }
             return toReturn;
@@ -74,23 +75,29 @@ namespace FileAllocationTable.FAT
             return blocks[currentBlockIndex];
         }
         /// <summary>
-        /// Если может, то освобождает блок с указанным номером. Номер блока не превышает EOC и не может быть меньше 2.
-        /// В случае неудачи вернет false
+        /// Освобождает последовательность кластеров, на которых расположен файл/директория.
+        /// Номер блока не превышает EOC и не может быть меньше 2.
         /// </summary>
-        /// <param name="blockNumber">номер блока для освобождения</param>
+        /// <param name="blockNumber">стартовый номер блока, на котором расположен файл/директория</param>
         /// <returns></returns>
-        public bool FreeBlock(int blockNumber)
+        public bool FreeBlocks(int blockNumber)
         {
-            if (blockNumber >= GlobalConstants.EOC)
+            if (blockNumber == GlobalConstants.EOC || blockNumber < 3)
             {
                 return false;
             }
-            if (blockNumber < 2)
+            else
             {
-                return false;
+                int currentBlock = blockNumber;
+                int nextBlock;
+                while (currentBlock != GlobalConstants.EOC)
+                {
+                    nextBlock = blocks[currentBlock]; 
+                    blocks[currentBlock] = 0;
+                    currentBlock = nextBlock;
+                }
+                return true;
             }
-            blocks[blockNumber] = 0;
-            return true;
         }
         /// <summary>
         /// Возвращает массив кластеров, на которых расположен файл/каталог

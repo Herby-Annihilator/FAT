@@ -34,9 +34,8 @@ namespace FileSystemFAT
             else
             {
                 ROMsize = Convert.ToInt32(comboBox1.Text) * 1024 * 1024;
-                MainWindow = new MainWindow();
+                MainWindow = new MainWindow(this);
                 MainWindow.Show();
-                MainWindow.Parent = this;
                 this.Hide();
             }
         }

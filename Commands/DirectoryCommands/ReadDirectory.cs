@@ -24,13 +24,13 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         /// Таблица FAT
         /// </summary>
         private FAT32 fat;
-        public override bool Execute()
+        internal override bool Execute()
         {
             int[] directoryClusters = fat.GetFileBlocks(currentDirectory.FirstClusterNumber);
             FileSystem.FilesAndDirectoriesInDirectory.Clear();
             for (int i = 0; i < directoryClusters.Length; i++)
             {
-                Cluster<CatalogEntry> cluster = currentDirectory.Search(i);
+                Cluster<CatalogEntry> cluster = currentDirectory.Search(directoryClusters[i]);
                 if (cluster == null)
                 {
                     return false;
@@ -39,9 +39,9 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                 {
                     if (cluster.Block[j] != null)
                     {
-                        if (!cluster.Block[i].Attributes.Hidden)
+                        if (!cluster.Block[j].Attributes.Hidden)
                         {
-                            FileSystem.FilesAndDirectoriesInDirectory.Add(cluster.Block[j].Name + cluster.Block[j].Extension);
+                            FileSystem.FilesAndDirectoriesInDirectory.Add(cluster.Block[j].Name + "." + cluster.Block[j].Extension);
                         }                      
                     }
                 }

@@ -71,7 +71,7 @@ namespace FileAllocationTable.FAT
                         extension = uppercaseSrting.ToUpper();
                     }
                 }
-                else if (string.IsNullOrEmpty(value))
+                else if (string.IsNullOrEmpty(value) && !Attributes.Subdirectory)
                 {
                     extension = "EXT";
                 }
@@ -81,10 +81,6 @@ namespace FileAllocationTable.FAT
                 }
             }
         }
-        /// <summary>
-        /// Атрибуты файла/каталога
-        /// </summary>
-        private Attributes attributes;
         /// <summary>
         /// Возвращает или устанавливает атрибуты каталога/файла
         /// </summary>
@@ -179,9 +175,9 @@ namespace FileAllocationTable.FAT
         /// <param name="extension">расширение файла</param>
         public CatalogEntry(Attributes attributes, int fileSize, int firstBlockNumber, string name, string extension)
         {
-            Name = name;
-            Extension = extension;
+            Name = name;            
             Attributes = attributes;
+            Extension = extension;
             FirstBlockNumber = firstBlockNumber;
             FileSize = fileSize;
 

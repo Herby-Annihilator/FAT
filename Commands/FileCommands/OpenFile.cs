@@ -24,7 +24,7 @@ namespace FileAllocationTable.Commands.FileCommands
         /// расширение файла
         /// </summary>
         private string fileExt;
-        public override bool Execute()
+        internal override bool Execute()
         {
             if (FileSystem.CurrentDirectory == null || FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber] == null)
             {

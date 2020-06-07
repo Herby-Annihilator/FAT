@@ -33,7 +33,7 @@ namespace FileAllocationTable.Commands.FileCommands
         /// </summary>
         protected int directoryCluster;
 
-        public override bool Execute()
+        internal override bool Execute()
         {
             File file = new File();
             int clusterForFile = FileSystem.FAT.GetNextFreeBlock();
@@ -52,7 +52,7 @@ namespace FileAllocationTable.Commands.FileCommands
                 if (directory.IsThereFreeSpace(directory.LastUsedClusterNumber))
                 {
                     CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, clusterForFile, name, extension);
-                    if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
+                    if (directory.AddEntry(catalogEntry))
                     {
                         FileSystem.directoriesAndFiles[directoryCluster] = directory;
                         file.Add(FileSystem.ClusterSize, clusterForFile);
@@ -67,7 +67,7 @@ namespace FileAllocationTable.Commands.FileCommands
                     {
                         directory.Add(FileSystem.ClusterSize / 32, clusterForDirectory);   // потому что размер каталожной записи типо 32 байта
                         CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, clusterForFile, name, extension);
-                        if (directory.Search(directory.LastUsedClusterNumber).Add(catalogEntry))
+                        if (directory.AddEntry(catalogEntry))
                         {
                             FileSystem.directoriesAndFiles[directoryCluster] = directory;
                             FileSystem.directoriesAndFiles[clusterForFile] = file;
@@ -92,10 +92,10 @@ namespace FileAllocationTable.Commands.FileCommands
         public CreateFile(string name, string extension, bool readOnly, bool system, bool hide, ref FileSystem fileSystem)
         {
             this.name = name;
-            this.extension = extension;
-            this.directoryCluster = FileSystem.CurrentDirectory.FirstBlockNumber;
+            this.extension = extension;           
             attributes = new Attributes(readOnly, hide, system, false, false, false);
             FileSystem = fileSystem;
+            this.directoryCluster = FileSystem.CurrentDirectory.FirstBlockNumber;
         }
     }
 }

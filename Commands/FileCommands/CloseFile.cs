@@ -15,7 +15,7 @@ namespace FileAllocationTable.Commands.FileCommands
         /// Ссылка на файловую систему
         /// </summary>
         public FileSystem FileSystem { get; set; }
-        public override bool Execute()
+        internal override bool Execute()
         {
             FileSystem.CurrentFile = null;
             return true;

@@ -81,7 +81,7 @@ namespace FileAllocationTable.FAT
         public Directory(CatalogEntry catalogEntry) : base()
         {
             CatalogEntry = catalogEntry;
-            Add(CatalogEntry.FileSize / 32, CatalogEntry.FirstBlockNumber);
+            Add(CatalogEntry.FileSize, CatalogEntry.FirstBlockNumber);
         }
         /// <summary>
         /// Узнает, есть ли в кластере свободное место под каталожную запись.
@@ -96,6 +96,20 @@ namespace FileAllocationTable.FAT
             {
                 if (cluster.Block[i] == null)
                 {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool AddEntry(CatalogEntry catalogEntry)
+        {
+            Cluster<CatalogEntry> cluster = Search(LastUsedClusterNumber);
+            for (int i = 0; i < cluster.Block.Length; i++)
+            {
+                if (cluster.Block[i] == null)
+                {
+                    cluster.Block[i] = catalogEntry;
                     return true;
                 }
             }

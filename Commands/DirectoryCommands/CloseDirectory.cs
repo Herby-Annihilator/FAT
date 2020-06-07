@@ -16,7 +16,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         /// Ссылка на файловую систему
         /// </summary>
         public FileSystem FileSystem { get; set; }
-        public override bool Execute()
+        internal override bool Execute()
         {
             if (FileSystem.CurrentDirectory == FileSystem.RootDirectoryCatalog || FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber] == null)
             {

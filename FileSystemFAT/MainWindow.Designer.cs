@@ -236,6 +236,7 @@
             this.buttonChangeAttributes.TabIndex = 8;
             this.buttonChangeAttributes.Text = "Изменить атрибуты";
             this.buttonChangeAttributes.UseVisualStyleBackColor = true;
+            this.buttonChangeAttributes.Click += new System.EventHandler(this.buttonChangeAttributes_Click);
             // 
             // label2
             // 
@@ -292,6 +293,7 @@
             this.buttonRemoveFile.TabIndex = 2;
             this.buttonRemoveFile.Text = "Удалить файл";
             this.buttonRemoveFile.UseVisualStyleBackColor = true;
+            this.buttonRemoveFile.Click += new System.EventHandler(this.buttonRemoveFile_Click);
             this.buttonRemoveFile.MouseLeave += new System.EventHandler(this.buttonCreateSubDirectory_MouseLeave);
             this.buttonRemoveFile.MouseHover += new System.EventHandler(this.buttonRemoveFile_MouseHover);
             // 

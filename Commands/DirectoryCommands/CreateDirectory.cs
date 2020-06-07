@@ -23,7 +23,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         /// Создает каталог
         /// </summary>
         /// <returns></returns>
-        public override bool Execute()
+        internal override bool Execute()
         {
             
             Directory currentDirectory;
@@ -35,7 +35,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                     return false;
                 }
                 currentDirectory = (Directory)FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber];
-                CatalogEntry catalogEntry = new CatalogEntry(attributes, 0, clusterForDirectory, name, "");
+                CatalogEntry catalogEntry = new CatalogEntry(attributes, FileSystem.ClusterSize / 32, clusterForDirectory, name, "");
                 if (!currentDirectory.IsThereFreeSpace(currentDirectory.LastUsedClusterNumber))
                 {
                     int cluster = FileSystem.FAT.GetNextFreeBlock(currentDirectory.FirstClusterNumber);
@@ -45,7 +45,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                     }
                     currentDirectory.Add(FileSystem.ClusterSize / 32, cluster);  // потому что размер каталожной записи типо 32 байта
                 }                    
-                currentDirectory.Search(currentDirectory.LastUsedClusterNumber).Add(catalogEntry);
+                currentDirectory.AddEntry(catalogEntry);
                 //
                 // ниже костыль
                 //
@@ -55,7 +55,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                 //
                 directoryToAdd.Add(FileSystem.ClusterSize / 32, clusterForDirectory);
                 CreateDotFile dotFile = new CreateDotFile(FileSystem, clusterForDirectory);
-                CreateDoubleDotFile doubleDotFile = new CreateDoubleDotFile(FileSystem, clusterForDirectory, FileSystem.CurrentDirectory.FirstBlockNumber);
+                CreateDoubleDotFile doubleDotFile = new CreateDoubleDotFile(FileSystem, FileSystem.CurrentDirectory.FirstBlockNumber);
                 dotFile.Execute();
                 doubleDotFile.Execute();
                 FileSystem.directoriesAndFiles[clusterForDirectory] = directoryToAdd;
