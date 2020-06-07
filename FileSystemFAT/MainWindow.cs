@@ -90,5 +90,15 @@ namespace FileSystemFAT
         {
             Parent.Close();
         }
+        /// <summary>
+        /// Создаем подкаталог
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonCreateSubDirectory_Click(object sender, EventArgs e)
+        {
+            CreateDirectory createDirectory = new CreateDirectory(fileSystem);
+            createDirectory.ShowDialog();
+        }
     }
 }

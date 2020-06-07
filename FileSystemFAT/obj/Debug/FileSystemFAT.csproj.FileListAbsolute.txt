@@ -8,3 +8,9 @@ D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\F
 D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.csproj.GenerateResource.cache
 D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.exe
 D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.pdb
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\bin\Debug\FileAllocationTable.dll
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\bin\Debug\FileAllocationTable.pdb
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.ChangeAttributes.resources
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.CreateDirectory.resources
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.CreateFile.resources
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.csproj.CopyComplete

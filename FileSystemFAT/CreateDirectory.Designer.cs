@@ -33,6 +33,7 @@
             this.checkedListBoxAttributes = new System.Windows.Forms.CheckedListBox();
             this.buttonCreateDirectory = new System.Windows.Forms.Button();
             this.textBoxDirectoryName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label3
@@ -72,6 +73,7 @@
             this.buttonCreateDirectory.TabIndex = 9;
             this.buttonCreateDirectory.Text = "Создать";
             this.buttonCreateDirectory.UseVisualStyleBackColor = true;
+            this.buttonCreateDirectory.Click += new System.EventHandler(this.buttonCreateDirectory_Click);
             // 
             // textBoxDirectoryName
             // 
@@ -81,11 +83,20 @@
             this.textBoxDirectoryName.Size = new System.Drawing.Size(100, 20);
             this.textBoxDirectoryName.TabIndex = 7;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(240, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(0, 13);
+            this.label2.TabIndex = 14;
+            // 
             // CreateDirectory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(343, 169);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.checkedListBoxAttributes);
@@ -108,5 +119,6 @@
         private System.Windows.Forms.CheckedListBox checkedListBoxAttributes;
         private System.Windows.Forms.Button buttonCreateDirectory;
         private System.Windows.Forms.TextBox textBoxDirectoryName;
+        private System.Windows.Forms.Label label2;
     }
 }

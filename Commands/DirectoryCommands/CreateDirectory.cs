@@ -73,7 +73,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         /// <param name="system">будет ли директория системной</param>
         /// <param name="fileSystem">ссылка на файловую систему</param>
         /// <param name="currentDirectoryCluster">номер первого кластера директории родителя</param>
-        public CreateDirectory(string directoryName, bool hidden, bool system, ref FileSystem fileSystem)
+        public CreateDirectory(string directoryName, bool hidden, bool system, FileSystem fileSystem)
         {
             FileSystem = fileSystem;
             attributes = new Attributes(true, hidden, system, false, true, false);
