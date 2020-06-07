@@ -46,6 +46,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeAttributes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeAttributes.Designer.cs">
+      <DependentUpon>ChangeAttributes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreateDirectory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateDirectory.Designer.cs">
+      <DependentUpon>CreateDirectory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreateFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateFile.Designer.cs">
+      <DependentUpon>CreateFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +78,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ChangeAttributes.resx">
+      <DependentUpon>ChangeAttributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateDirectory.resx">
+      <DependentUpon>CreateDirectory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateFile.resx">
+      <DependentUpon>CreateFile.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -87,6 +114,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileAllocationTable.csproj">
+      <Project>{a249e2d4-e67c-45e9-854b-e74279b1463d}</Project>
+      <Name>FileAllocationTable</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

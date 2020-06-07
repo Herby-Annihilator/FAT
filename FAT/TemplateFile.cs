@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileAllocationTable.FAT
 {
-    public abstract class TemplateFile<T>
+    internal abstract class TemplateFile<T>
     {
         /// <summary>
         /// Номер первого кластера

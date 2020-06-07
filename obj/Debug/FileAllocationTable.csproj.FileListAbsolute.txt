@@ -1,1 +1,5 @@
 D:\Проекты  в студии\FileAllocationTable\obj\Debug\FileAllocationTable.csprojAssemblyReference.cache
+D:\Проекты  в студии\FileAllocationTable\bin\Debug\FileAllocationTable.dll
+D:\Проекты  в студии\FileAllocationTable\bin\Debug\FileAllocationTable.pdb
+D:\Проекты  в студии\FileAllocationTable\obj\Debug\FileAllocationTable.dll
+D:\Проекты  в студии\FileAllocationTable\obj\Debug\FileAllocationTable.pdb

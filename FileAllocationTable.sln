@@ -5,7 +5,10 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileAllocationTable", "FileAllocationTable.csproj", "{A249E2D4-E67C-45E9-854B-E74279B1463D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemFAT", "..\FileSystemFAT\FileSystemFAT.csproj", "{D6867F8E-0CA3-451D-ABAD-AAA5B92A1FB5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemFAT", "FileSystemFAT\FileSystemFAT.csproj", "{D6867F8E-0CA3-451D-ABAD-AAA5B92A1FB5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A249E2D4-E67C-45E9-854B-E74279B1463D} = {A249E2D4-E67C-45E9-854B-E74279B1463D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileAllocationTable.FAT
 {
-    public class Cluster<T>
+    internal class Cluster<T>
     {
         /// <summary>
         /// Указатель на левого сына

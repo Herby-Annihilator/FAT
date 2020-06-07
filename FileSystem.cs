@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FileAllocationTable.Commands;
+using FileAllocationTable.Commands.DirectoryCommands;
+using FileAllocationTable.Commands.FileCommands;
 using FileAllocationTable.FAT;
 
 namespace FileAllocationTable
@@ -16,7 +18,7 @@ namespace FileAllocationTable
         /// <summary>
         /// Это будет массив файлов и каталогов - "отражение" таблицы FAT
         /// </summary>
-        public object[] directoriesAndFiles;
+        internal object[] directoriesAndFiles;
         /// <summary>
         /// Размер диска в байтах
         /// </summary>
@@ -24,19 +26,15 @@ namespace FileAllocationTable
         /// <summary>
         /// Размер кластера в байтах
         /// </summary>
-        public int ClusterSize { get; set; }
+        public int ClusterSize { get; internal set; }
         /// <summary>
         /// Таблица FAT в этой системе
         /// </summary>
-        public FAT32 FAT { get; set; }
+        internal FAT32 FAT { get; set; }
         /// <summary>
         /// Корневой каталог
         /// </summary>
-        public CatalogEntry RootDirectoryCatalog { get; set; }
-        /// <summary>
-        /// Этот объект (текущий файл) должен строиться только тогда, когда он действительно нужен
-        /// </summary>
-        public File File { get; set; }
+        internal CatalogEntry RootDirectoryCatalog { get; set; }
         public bool ExecuteCommand(Command command)
         {
             return command.Execute();
@@ -48,14 +46,35 @@ namespace FileAllocationTable
         /// <summary>
         /// Текущий используемы каталог
         /// </summary>
-        public CatalogEntry CurrentDirectory { get; set; } = null;
+        internal CatalogEntry CurrentDirectory { get; set; } = null;
         /// <summary>
         /// Текущий используемый каталог
         /// </summary>
-        public CatalogEntry CurrentFile { get; set; } = null;
+        internal CatalogEntry CurrentFile { get; set; } = null;
         /// <summary>
         /// Содержимое файла - длина одной строки = не больше размера кластера в байтах
         /// </summary>
         public List<string> FileContent { get; set; } = new List<string>();
+        /// <summary>
+        /// "Инициализирует" файловую систему
+        /// </summary>
+        /// <param name="hardDriverSize">размер диска в байтах</param>
+        public FileSystem(int hardDriverSize)
+        {
+            HardDriverSize = hardDriverSize;
+            ClusterSize = 4096;
+            FAT = new FAT32(HardDriverSize / 4096);
+            directoriesAndFiles = new object[FAT.TableSize];
+            //
+            // Создаем корневой каталог
+            //
+            int clusterForRoot = FAT.GetNextFreeBlock();
+            Attributes rootAttributes = new Attributes(false, false, true, false, true, false);
+            RootDirectoryCatalog = new CatalogEntry(rootAttributes, 0, clusterForRoot, "\\", "");
+            directoriesAndFiles[clusterForRoot] = new Directory(RootDirectoryCatalog);
+            CurrentDirectory = RootDirectoryCatalog;
+            CreateDotFile dotFile = new CreateDotFile(this, clusterForRoot);
+            dotFile.Execute();
+        }
     }
 }

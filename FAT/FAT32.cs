@@ -9,7 +9,7 @@ namespace FileAllocationTable.FAT
     /// <summary>
     /// Сама таблица FAT
     /// </summary>
-    public class FAT32
+    internal class FAT32
     {
         /// <summary>
         /// Размер таблицы

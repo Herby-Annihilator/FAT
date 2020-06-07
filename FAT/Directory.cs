@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileAllocationTable.FAT
 {
-    public class Directory : TemplateFile<CatalogEntry>
+    internal class Directory : TemplateFile<CatalogEntry>
     {
         //public delegate bool DesiredFileOrDirectory(string nameAndExtension, string desiredName); 
 
@@ -81,6 +81,7 @@ namespace FileAllocationTable.FAT
         public Directory(CatalogEntry catalogEntry) : base()
         {
             CatalogEntry = catalogEntry;
+            Add(CatalogEntry.FileSize / 32, CatalogEntry.FirstBlockNumber);
         }
         /// <summary>
         /// Узнает, есть ли в кластере свободное место под каталожную запись.

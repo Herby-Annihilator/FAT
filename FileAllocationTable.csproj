@@ -58,7 +58,6 @@
     <Compile Include="FAT\FAT32.cs" />
     <Compile Include="FAT\File.cs" />
     <Compile Include="FAT\Cluster.cs" />
-    <Compile Include="FAT\MyChar.cs" />
     <Compile Include="FAT\TemplateFile.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="GlobalConstants.cs" />

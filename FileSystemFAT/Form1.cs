@@ -12,7 +12,14 @@ namespace FileSystemFAT
 {
     public partial class StartWindow : Form
     {
+        /// <summary>
+        /// Размер диска в байтах
+        /// </summary>
         public int ROMsize { get; set; }
+        /// <summary>
+        /// Ссылка на главную форму
+        /// </summary>
+        public MainWindow MainWindow { get; set; }
         public StartWindow()
         {
             InitializeComponent();
@@ -27,6 +34,10 @@ namespace FileSystemFAT
             else
             {
                 ROMsize = Convert.ToInt32(comboBox1.Text) * 1024 * 1024;
+                MainWindow = new MainWindow();
+                MainWindow.Show();
+                MainWindow.Parent = this;
+                this.Hide();
             }
         }
     }

@@ -9,7 +9,7 @@ namespace FileAllocationTable.FAT
     /// <summary>
     /// Каталожная запись 32 байта
     /// </summary>
-    public class CatalogEntry
+    internal class CatalogEntry
     {
         /// <summary>
         /// Имя файла

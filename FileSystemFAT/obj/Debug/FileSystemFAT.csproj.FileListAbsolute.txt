@@ -1,0 +1,10 @@
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\bin\Debug\FileSystemFAT.exe.config
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\bin\Debug\FileSystemFAT.exe
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\bin\Debug\FileSystemFAT.pdb
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.csprojAssemblyReference.cache
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.StartWindow.resources
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.MainWindow.resources
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.Properties.Resources.resources
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.csproj.GenerateResource.cache
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.exe
+D:\Проекты  в студии\FileAllocationTable\FileSystemFAT\obj\Debug\FileSystemFAT.pdb

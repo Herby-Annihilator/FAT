@@ -73,9 +73,9 @@ namespace FileAllocationTable.Commands.FileCommands
                             FileSystem.directoriesAndFiles[clusterForFile] = file;
                             return true;
                         }
-                        
                     }
-                } 
+                }
+                
             }
             return false;
         }
