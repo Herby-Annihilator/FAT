@@ -29,6 +29,10 @@ namespace FileSystemFAT
         {
             InitializeComponent();
             fileSystem = new FileSystem(Parent.ROMsize);
+            for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
+            {
+                textBoxSubdirectories.Text += "\"" + fileSystem.FilesAndDirectoriesInDirectory[i] + "\"" + " ";
+            }
         }
 
         private void buttonCreateSubDirectory_MouseHover(object sender, EventArgs e)
@@ -99,6 +103,164 @@ namespace FileSystemFAT
         {
             CreateDirectory createDirectory = new CreateDirectory(fileSystem);
             createDirectory.ShowDialog();
+            textBoxSubdirectories.Text = "";
+            for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
+            {
+                textBoxSubdirectories.Text += "\"" + fileSystem.FilesAndDirectoriesInDirectory[i] + "\"" + " ";
+            }           
+        }
+        /// <summary>
+        /// Переход в подкаталог
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonNextSubdirectory_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxNextSubdirectory.Text) || BunnedSymbols.IsBunned(textBoxNextSubdirectory.Text))
+            {
+                MessageBox.Show("Проверьте правильность имени открываемой директории, возможно, поле пустое!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxNextSubdirectory.Focus();
+                textBoxNextSubdirectory.ForeColor = Color.Red;
+            }
+            else
+            {
+                OpenDirectory openDirectory = new OpenDirectory(textBoxNextSubdirectory.Text, ref fileSystem);
+                if (!fileSystem.ExecuteCommand(openDirectory))
+                {
+                    MessageBox.Show("Возможно, открываемая директория не является директорией", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    ReadDirectory readDirectory = new ReadDirectory(fileSystem);
+                    if (!fileSystem.ExecuteCommand(readDirectory))
+                    {
+                        MessageBox.Show("Проверяй массив object-ов, похоже неверный апкаст", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Close();
+                    }
+                }
+            }
+            textBoxNextSubdirectory.Clear();
+        }
+        /// <summary>
+        /// Покинуть текущий каталог
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonLeaveCurrentDirectory_Click(object sender, EventArgs e)
+        {
+            CloseDirectory closeDirectory = new CloseDirectory(fileSystem);
+            if (!fileSystem.ExecuteCommand(closeDirectory))
+            {
+                MessageBox.Show("Возможно, вы находимтесь в корневом каталоге. Его закрыть нельзя", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                ReadDirectory readDirectory = new ReadDirectory(fileSystem);
+                if (!fileSystem.ExecuteCommand(readDirectory))
+                {
+                    MessageBox.Show("Проверяй массив object-ов, похоже неверный апкаст", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                }
+            }
+        }
+        /// <summary>
+        /// Создать файл
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonCreateFile_Click(object sender, EventArgs e)
+        {
+            CreateFile createFile = new CreateFile(fileSystem);
+            createFile.ShowDialog();
+            textBoxSubdirectories.Text = "";
+            for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
+            {
+                textBoxSubdirectories.Text += fileSystem.FilesAndDirectoriesInDirectory[i];
+            }
+        }
+        /// <summary>
+        /// Редактируем файл
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonRewriteFile_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxRewriteFileName.Text))
+            {
+                MessageBox.Show("Поле имени файла пустое!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                string[] nameAndExt = textBoxRewriteFileName.Text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                string name = nameAndExt[0];
+                string ext = "";
+                if (nameAndExt.Length == 2)
+                {
+                    ext = nameAndExt[1];
+                }
+                OpenFile openFile = new OpenFile(name, ext, fileSystem);
+                if (!fileSystem.ExecuteCommand(openFile))
+                {
+                    MessageBox.Show("Не могу обновить ссылки", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    ReadFile readFile = new ReadFile(fileSystem);
+                    if (fileSystem.ExecuteCommand(readFile))
+                    {
+                        buttonAcceptChanges.Enabled = true;
+                        buttonRewriteFile.Enabled = false;
+                        textBoxRewriteFile.Text = "";
+                        for (int i = 0; i < fileSystem.FileContent.Count; i++)
+                        {
+                            textBoxRewriteFile.Text += fileSystem.FileContent[i];
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Смотри массив object-ов", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Close();
+                    }
+                }
+            }
+            textBoxRewriteFileName.Clear();
+        }
+        /// <summary>
+        /// Принять изменения (сохранить)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonAcceptChanges_Click(object sender, EventArgs e)
+        {
+            fileSystem.FileContent.Clear();
+            //
+            // Считываем и правильно подготавливаем данные 
+            //
+            string content = textBoxRewriteFile.Text;
+            int substringNumber;
+            if (content.Length % fileSystem.ClusterSize == 0)
+            {
+                substringNumber = content.Length / fileSystem.ClusterSize;
+            }
+            else
+            {
+                substringNumber = content.Length / fileSystem.ClusterSize + 1;
+            }
+            for (int i = 0; i < substringNumber; i++)
+            {
+                fileSystem.FileContent.Add(content.Substring(i * fileSystem.ClusterSize, fileSystem.ClusterSize));
+            }
+            //
+            // Создаем команду
+            //
+            WriteToFile writeToFile = new WriteToFile(fileSystem);
+            if (!fileSystem.ExecuteCommand(writeToFile))
+            {
+                MessageBox.Show("Памяти не хватило", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            buttonAcceptChanges.Enabled = false;
+            buttonRewriteFile.Enabled = true;
+            textBoxRewriteFile.Clear();
         }
     }
 }

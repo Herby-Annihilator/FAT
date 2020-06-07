@@ -46,7 +46,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxRemoveFile = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxRevriteFile = new System.Windows.Forms.TextBox();
+            this.textBoxRewriteFileName = new System.Windows.Forms.TextBox();
             this.buttonAcceptChanges = new System.Windows.Forms.Button();
             this.buttonRemoveFile = new System.Windows.Forms.Button();
             this.buttonRewriteFile = new System.Windows.Forms.Button();
@@ -162,6 +162,7 @@
             this.buttonLeaveCurrentDirectory.TabIndex = 2;
             this.buttonLeaveCurrentDirectory.Text = "Покинуть текущий каталог";
             this.buttonLeaveCurrentDirectory.UseVisualStyleBackColor = true;
+            this.buttonLeaveCurrentDirectory.Click += new System.EventHandler(this.buttonLeaveCurrentDirectory_Click);
             this.buttonLeaveCurrentDirectory.MouseLeave += new System.EventHandler(this.buttonCreateSubDirectory_MouseLeave);
             this.buttonLeaveCurrentDirectory.MouseHover += new System.EventHandler(this.buttonLeaveCurrentDirectory_MouseHover);
             // 
@@ -173,6 +174,7 @@
             this.buttonNextSubdirectory.TabIndex = 1;
             this.buttonNextSubdirectory.Text = "Перейти в подкаталог";
             this.buttonNextSubdirectory.UseVisualStyleBackColor = true;
+            this.buttonNextSubdirectory.Click += new System.EventHandler(this.buttonNextSubdirectory_Click);
             this.buttonNextSubdirectory.MouseLeave += new System.EventHandler(this.buttonCreateSubDirectory_MouseLeave);
             this.buttonNextSubdirectory.MouseHover += new System.EventHandler(this.buttonNextSubdirectory_MouseHover);
             // 
@@ -196,7 +198,7 @@
             this.groupBoxFiles.Controls.Add(this.label2);
             this.groupBoxFiles.Controls.Add(this.textBoxRemoveFile);
             this.groupBoxFiles.Controls.Add(this.label1);
-            this.groupBoxFiles.Controls.Add(this.textBoxRevriteFile);
+            this.groupBoxFiles.Controls.Add(this.textBoxRewriteFileName);
             this.groupBoxFiles.Controls.Add(this.buttonAcceptChanges);
             this.groupBoxFiles.Controls.Add(this.buttonRemoveFile);
             this.groupBoxFiles.Controls.Add(this.buttonRewriteFile);
@@ -261,13 +263,13 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Имя файла";
             // 
-            // textBoxRevriteFile
+            // textBoxRewriteFileName
             // 
-            this.textBoxRevriteFile.Location = new System.Drawing.Point(145, 70);
-            this.textBoxRevriteFile.MaxLength = 12;
-            this.textBoxRevriteFile.Name = "textBoxRevriteFile";
-            this.textBoxRevriteFile.Size = new System.Drawing.Size(124, 20);
-            this.textBoxRevriteFile.TabIndex = 4;
+            this.textBoxRewriteFileName.Location = new System.Drawing.Point(145, 70);
+            this.textBoxRewriteFileName.MaxLength = 12;
+            this.textBoxRewriteFileName.Name = "textBoxRewriteFileName";
+            this.textBoxRewriteFileName.Size = new System.Drawing.Size(124, 20);
+            this.textBoxRewriteFileName.TabIndex = 4;
             // 
             // buttonAcceptChanges
             // 
@@ -278,6 +280,7 @@
             this.buttonAcceptChanges.TabIndex = 3;
             this.buttonAcceptChanges.Text = "Принять изменения";
             this.buttonAcceptChanges.UseVisualStyleBackColor = true;
+            this.buttonAcceptChanges.Click += new System.EventHandler(this.buttonAcceptChanges_Click);
             this.buttonAcceptChanges.MouseLeave += new System.EventHandler(this.buttonCreateSubDirectory_MouseLeave);
             this.buttonAcceptChanges.MouseHover += new System.EventHandler(this.buttonAcceptChanges_MouseHover);
             // 
@@ -300,6 +303,7 @@
             this.buttonRewriteFile.TabIndex = 1;
             this.buttonRewriteFile.Text = "Редактировать файл";
             this.buttonRewriteFile.UseVisualStyleBackColor = true;
+            this.buttonRewriteFile.Click += new System.EventHandler(this.buttonRewriteFile_Click);
             this.buttonRewriteFile.MouseLeave += new System.EventHandler(this.buttonCreateSubDirectory_MouseLeave);
             this.buttonRewriteFile.MouseHover += new System.EventHandler(this.buttonRewriteFile_MouseHover);
             // 
@@ -311,6 +315,7 @@
             this.buttonCreateFile.TabIndex = 0;
             this.buttonCreateFile.Text = "Создать файл";
             this.buttonCreateFile.UseVisualStyleBackColor = true;
+            this.buttonCreateFile.Click += new System.EventHandler(this.buttonCreateFile_Click);
             this.buttonCreateFile.MouseLeave += new System.EventHandler(this.buttonCreateSubDirectory_MouseLeave);
             this.buttonCreateFile.MouseHover += new System.EventHandler(this.buttonCreateFile_MouseHover);
             // 
@@ -410,7 +415,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxRemoveFile;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxRevriteFile;
+        private System.Windows.Forms.TextBox textBoxRewriteFileName;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxChangeAttributes;

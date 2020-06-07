@@ -36,14 +36,18 @@ namespace FileSystemFAT
                 label2.Text = "В имени есть запрещенные символы";
             }
             else
-            {
+            {               
                 FileAllocationTable.Commands.DirectoryCommands.CreateDirectory createDirectory =
-                    new FileAllocationTable.Commands.DirectoryCommands.CreateDirectory(textBoxDirectoryName.Text, false, true, FileSystem);
+                    new FileAllocationTable.Commands.DirectoryCommands.CreateDirectory(textBoxDirectoryName.Text, checkedListBoxAttributes.GetItemChecked(0), true, FileSystem);
                 
                 if (!FileSystem.ExecuteCommand(createDirectory))
                 {
                     MessageBox.Show("Не удалось создать директорию", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
+                FileSystem.FilesAndDirectoriesInDirectory.Clear();
+                ReadDirectory readDirectory = new ReadDirectory(FileSystem);
+                FileSystem.ExecuteCommand(readDirectory);
+                this.Close();
             }
         }
     }

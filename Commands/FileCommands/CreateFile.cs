@@ -89,11 +89,11 @@ namespace FileAllocationTable.Commands.FileCommands
         /// <param name="hide">будет ли файл скрытым</param>
         /// <param name="fileSystem">файловая система</param>
         /// <param name="directoryCluster">начальный кластер, в котором находится директория, в которой будет создаваться файл</param>
-        public CreateFile(string name, string extension, bool readOnly, bool system, bool hide, ref FileSystem fileSystem, int directoryCluster)
+        public CreateFile(string name, string extension, bool readOnly, bool system, bool hide, ref FileSystem fileSystem)
         {
             this.name = name;
             this.extension = extension;
-            this.directoryCluster = directoryCluster;
+            this.directoryCluster = FileSystem.CurrentDirectory.FirstBlockNumber;
             attributes = new Attributes(readOnly, hide, system, false, false, false);
             FileSystem = fileSystem;
         }

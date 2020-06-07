@@ -11,6 +11,6 @@ namespace FileAllocationTable.Commands
         /// <summary>
         /// Метод выполнения команды
         /// </summary>
-        public abstract bool Execute();
+        internal abstract bool Execute();
     }
 }

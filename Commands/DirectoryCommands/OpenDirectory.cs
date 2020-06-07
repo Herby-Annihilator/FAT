@@ -28,6 +28,10 @@ namespace FileAllocationTable.Commands
         {
             if (FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber] != null)
             {
+                if (!FileSystem.CurrentDirectory.Attributes.Subdirectory)
+                {
+                    return false;
+                }
                 StartDirectory = (Directory)FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber];
                 int[] clusters = FileSystem.FAT.GetFileBlocks(StartDirectory.FirstClusterNumber);
                 string[] directories = fullName.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);

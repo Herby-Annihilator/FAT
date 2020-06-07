@@ -61,6 +61,7 @@
             this.buttonCreateFile.TabIndex = 2;
             this.buttonCreateFile.Text = "Создать";
             this.buttonCreateFile.UseVisualStyleBackColor = true;
+            this.buttonCreateFile.Click += new System.EventHandler(this.buttonCreateFile_Click);
             // 
             // checkedListBoxAttributes
             // 

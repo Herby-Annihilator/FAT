@@ -33,14 +33,16 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                 Cluster<CatalogEntry> cluster = currentDirectory.Search(i);
                 if (cluster == null)
                 {
-                    FileSystem.FilesAndDirectoriesInDirectory.Clear();
                     return false;
                 }
                 for (int j = 0; j < cluster.Block.Length; j++)
                 {
                     if (cluster.Block[j] != null)
                     {
-                        FileSystem.FilesAndDirectoriesInDirectory.Add(cluster.Block[j].Name + cluster.Block[j].Extension);
+                        if (!cluster.Block[i].Attributes.Hidden)
+                        {
+                            FileSystem.FilesAndDirectoriesInDirectory.Add(cluster.Block[j].Name + cluster.Block[j].Extension);
+                        }                      
                     }
                 }
             }
@@ -51,7 +53,7 @@ namespace FileAllocationTable.Commands.DirectoryCommands
         /// Создаст команду "Прочитать директорию"
         /// </summary>
         /// <param name="fileSystem">ссылка на файловую систему</param>
-        public ReadDirectory(ref FileSystem fileSystem)
+        public ReadDirectory(FileSystem fileSystem)
         {
             FileSystem = fileSystem;
             currentDirectory = (Directory)FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber];
