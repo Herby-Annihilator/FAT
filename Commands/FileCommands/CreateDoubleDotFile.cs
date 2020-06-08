@@ -20,11 +20,11 @@ namespace FileAllocationTable.Commands.FileCommands
         /// Создает команду "Создать файл .."
         /// </summary>
         /// <param name="fileSystem">файловая система</param>
-        /// <param name="directoryCluster">стартовый номер кластера той директории, в которой будем делать этот файл</param>
-        /// <param name="parentDirectoryCluster">стартовый номер кластера директории-родителя</param>
-        public CreateDoubleDotFile(FileSystem fileSystem, int parentDirectoryCluster) : base("..", "", true, true, true, ref fileSystem)
+        /// <param name="directoryClusterWhereCreate">стартовый номер кластера той директории, в которой будем делать этот файл</param>
+        public CreateDoubleDotFile(FileSystem fileSystem, int directoryClusterWhereCreate) : base("..", "", true, true, true, ref fileSystem)
         {
-            this.parentDirectoryCluster = parentDirectoryCluster;
+            this.parentDirectoryCluster = FileSystem.CurrentDirectory.FirstBlockNumber;
+            directoryCluster = directoryClusterWhereCreate;
         }
 
         internal override bool Execute()

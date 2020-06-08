@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FileAllocationTable.FAT;
 
 namespace FileAllocationTable.Commands.FileCommands
 {
@@ -28,6 +29,19 @@ namespace FileAllocationTable.Commands.FileCommands
                 //
                 FileSystem.directoriesAndFiles[FileSystem.CurrentFile.FirstBlockNumber] = null;   // просто занулил нахер дерево, так нельзя делать
                 FileSystem.FAT.FreeBlocks(FileSystem.CurrentFile.FirstBlockNumber);
+                if (FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber] == null)
+                {
+                    return false;
+                }
+                Directory directory = (Directory)FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber];
+
+                int[] clusters = FileSystem.FAT.GetFileBlocks(FileSystem.CurrentDirectory.FirstBlockNumber);
+                if (!directory.RemoveCatalogEntry(FileSystem.CurrentFile.FirstBlockNumber, clusters))
+                {
+                    return false;
+                }
+
+                FileSystem.directoriesAndFiles[FileSystem.CurrentDirectory.FirstBlockNumber] = directory;
                 CloseFile closeFile = new CloseFile(FileSystem);
                 return closeFile.Execute();
             }

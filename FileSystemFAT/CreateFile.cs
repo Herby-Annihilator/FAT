@@ -56,6 +56,7 @@ namespace FileSystemFAT
                         MessageBox.Show("Проверяй массив object-ов, похоже неверный апкаст", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         this.Close();
                     }
+                    Close();
                 }
             }
         }

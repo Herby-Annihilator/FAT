@@ -138,6 +138,7 @@ namespace FileSystemFAT
                         MessageBox.Show("Проверяй массив object-ов, похоже неверный апкаст", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         this.Close();
                     }
+                    textBoxSubdirectories.Clear();
                     for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
                     {
                         textBoxSubdirectories.Text += "\"" + fileSystem.FilesAndDirectoriesInDirectory[i] + "\"" + " ";
@@ -165,6 +166,11 @@ namespace FileSystemFAT
                 {
                     MessageBox.Show("Проверяй массив object-ов, похоже неверный апкаст", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.Close();
+                }
+                textBoxSubdirectories.Clear();
+                for (int i = 0; i < fileSystem.FilesAndDirectoriesInDirectory.Count; i++)
+                {
+                    textBoxSubdirectories.Text += "\"" + fileSystem.FilesAndDirectoriesInDirectory[i] + "\"" + " ";
                 }
             }
         }
@@ -255,7 +261,7 @@ namespace FileSystemFAT
             }
             for (int i = 0; i < substringNumber; i++)
             {
-                fileSystem.FileContent.Add(content.Substring(i * fileSystem.ClusterSize, fileSystem.ClusterSize));
+                fileSystem.FileContent.Add(content.GetSubstring(i * fileSystem.ClusterSize, fileSystem.ClusterSize));
             }
             //
             // Создаем команду

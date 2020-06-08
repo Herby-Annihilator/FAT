@@ -115,5 +115,27 @@ namespace FileAllocationTable.FAT
             }
             return false;
         }
+        /// <summary>
+        /// Удаляет каталожную запись, соответствующую тому файлу, который начинается с указанного кластера
+        /// </summary>
+        /// <param name="firstBlockNumber">удаляемый файл/директория должны начинаться с этого кластера</param>
+        /// <param name="directoryClusters">номера кластеров, на которых расположена директория, в которой удаляют файл/директорию</param>
+        /// <returns></returns>
+        public bool RemoveCatalogEntry(int firstBlockNumber, int[] directoryClusters)
+        {
+            for (int i = 0; i < directoryClusters.Length; i++)
+            {
+                Cluster<CatalogEntry> cluster = Search(directoryClusters[i]);
+                for (int j = 0; j < cluster.Block.Length; j++)
+                {
+                    if (cluster.Block[j].FirstBlockNumber == firstBlockNumber)
+                    {
+                        cluster.Block[j] = null;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

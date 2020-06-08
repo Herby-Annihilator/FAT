@@ -53,9 +53,10 @@ namespace FileAllocationTable.Commands.DirectoryCommands
                 //
                 // выше костыль
                 //
-                directoryToAdd.Add(FileSystem.ClusterSize / 32, clusterForDirectory);
+                //directoryToAdd.Add(FileSystem.ClusterSize / 32, clusterForDirectory);
+                FileSystem.directoriesAndFiles[clusterForDirectory] = directoryToAdd;
                 CreateDotFile dotFile = new CreateDotFile(FileSystem, clusterForDirectory);
-                CreateDoubleDotFile doubleDotFile = new CreateDoubleDotFile(FileSystem, FileSystem.CurrentDirectory.FirstBlockNumber);
+                CreateDoubleDotFile doubleDotFile = new CreateDoubleDotFile(FileSystem, clusterForDirectory);
                 dotFile.Execute();
                 doubleDotFile.Execute();
                 FileSystem.directoriesAndFiles[clusterForDirectory] = directoryToAdd;

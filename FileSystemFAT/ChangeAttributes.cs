@@ -20,6 +20,11 @@ namespace FileSystemFAT
             InitializeComponent();
             FileSystem = fileSystem;
             textBox1.Text = fileName;
+            Attributes attributes = FileSystem.GetCurrentFileAttributes();
+            checkedListBox1.SetItemChecked(0, attributes.ReadOnly);
+            checkedListBox1.SetItemChecked(1, attributes.Hidden);
+            checkedListBox1.SetItemChecked(2, attributes.System);
+            checkedListBox1.SetItemChecked(3, attributes.Archival);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -31,6 +36,7 @@ namespace FileSystemFAT
                 MessageBox.Show("Не удалось обновить атрибуты", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 this.Close();
             }
+            Close();
         }
     }
 }

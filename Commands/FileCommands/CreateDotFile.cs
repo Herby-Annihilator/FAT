@@ -58,7 +58,7 @@ namespace FileAllocationTable.Commands.FileCommands
         /// <param name="directoryCluster">стартовый номер кластера той директории, в которой будем делать этот файл</param>
         public CreateDotFile(FileSystem fileSystem, int directoryCluster) : base(".", "", true, true, true, ref fileSystem)
         {
-            
+            this.directoryCluster = directoryCluster;
         }
 
     }
